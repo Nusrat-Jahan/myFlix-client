@@ -17,6 +17,7 @@ export class MovieView extends React.Component {
             <Card.Title><span className='text-primary'>Title: </span> {movieData.Title}</Card.Title>
             <Card.Text><span className='text-primary'>Description: </span>{movieData.Description}</Card.Text>
             <Card.Text><span className='text-primary'>Genre: </span>{movieData.Genre.Name}</Card.Text>
+            <Card.Text><span className='text-primary'>Director: </span>{movieData.Director.Name}</Card.Text>
             <Card.Text><span className='text-primary'>ReleaseYear: </span>{movieData.ReleaseYear}</Card.Text>
             <Card.Text><span className='text-primary'>ImdbRating: </span>{movieData.ImdbRating}</Card.Text>
             <Button block onClick={() => { onBackClick(); }}>Back</Button>
