@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Card } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import './movie-view.scss';
 
 export class MovieView extends React.Component {
   render() {
@@ -7,26 +10,19 @@ export class MovieView extends React.Component {
 
     return (
       <div className="movie-view">
-        <div className="movie-poster">
-          <img src={movieData.ImagePath} />
-        </div>
-        <div className="movie-title">
-          <span className="label">Title: </span>
-          <span className="value">{movieData.Title}</span>
-        </div>
-        <div className="movie-description">
-          <span className="label">Description: </span>
-          <span className="value">{movieData.Description}</span>
-        </div>
-        <div className="movie-genre">
-          <span className="label">Genre: </span>
-          <span className="value">{movieData.Genre.Name}</span>
-        </div>
-        <div className="movie-director">
-          <span className="label">Director: </span>
-          <span className="value">{movieData.Director.Name}</span>
-        </div>
-        <button onClick={() => { onBackClick(); }}>Back</button>
+        <Card border="info" bg="dark" text="white" className="movie-card">
+          <Card.Img variant='top' src={movieData.ImagePath} />
+
+          <Card.Body>
+            <Card.Title><span className='text-primary'>Title: </span> {movieData.Title}</Card.Title>
+            <Card.Text><span className='text-primary'>Description: </span>{movieData.Description}</Card.Text>
+            <Card.Text><span className='text-primary'>Genre: </span>{movieData.Genre.Name}</Card.Text>
+            <Card.Text><span className='text-primary'>ReleaseYear: </span>{movieData.ReleaseYear}</Card.Text>
+            <Card.Text><span className='text-primary'>ImdbRating: </span>{movieData.ImdbRating}</Card.Text>
+            <Button block onClick={() => { onBackClick(); }}>Back</Button>
+          </Card.Body>
+        </Card>
+
       </div>
     );
   }
