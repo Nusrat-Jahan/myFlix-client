@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 export function RegistrationView(props) {
   const [username, setUsername] = useState('');
@@ -13,8 +13,22 @@ export function RegistrationView(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(username, password, email, birthdate);
-    props.onRegister(username);
+    axios.post('https://myflix-movie-app.herokuapp.com/users', {
+      Username: username,
+      Password: password,
+      Email: email,
+      Birthdate: birthdate
+    })
+      .then(response => {
+        const data = response.data;
+        console.log(data);
+        window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+      })
+      .catch(e => {
+        console.log('error registering the user')
+      });
+    // console.log(username, password, email, birthdate);
+    // props.onRegister(username);
   };
 
   return (
@@ -47,12 +61,12 @@ export function RegistrationView(props) {
   )
 }
 
-RegistrationView.propTypes = {
-  register: PropTypes.shape({
-    Username: PropTypes.string.isRequired,
-    Password: PropTypes.string.isRequired,
-    Email: PropTypes.string.isRequired,
-    Birthdate: PropTypes.string.isRequired
-  }),
-  onRegister: PropTypes.func.isRequired
-};
+// RegistrationView.propTypes = {
+//   register: PropTypes.shape({
+//     Username: PropTypes.string.isRequired,
+//     Password: PropTypes.string.isRequired,
+//     Email: PropTypes.string.isRequired,
+//     Birthdate: PropTypes.string.isRequired
+//   }),
+//    onRegister: PropTypes.func.isRequired
+// };
