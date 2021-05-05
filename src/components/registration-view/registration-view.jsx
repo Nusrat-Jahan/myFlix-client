@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import axios from 'axios';
 // import PropTypes from 'prop-types';
 
 export function RegistrationView(props) {
@@ -27,7 +28,7 @@ export function RegistrationView(props) {
       .catch(e => {
         console.log('error registering the user')
       });
-    // console.log(username, password, email, birthdate);
+    console.log(username, password, email, birthdate);
     // props.onRegister(username);
   };
 
