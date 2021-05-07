@@ -12,10 +12,10 @@ export class DirectorView extends React.Component {
         <Card border="info" bg="dark" text="white" className="director-card">
 
           <Card.Body>
-            <Card.Title><span className='text-primary'>Name: </span> {director.Director.Name}</Card.Title>
-            <Card.Text><span className='text-primary'>Bio: </span>{director.Director.Bio}</Card.Text>
-            <Card.Text><span className='text-primary'>Birth: </span>{director.Director.Birth}</Card.Text>
-            <Card.Text><span className='text-primary'>Death: </span>{director.Director.Death}</Card.Text>
+            <Card.Title><span className='text-primary'>Name: </span> {director.Name}</Card.Title>
+            <Card.Text><span className='text-primary'>Bio: </span>{director.Bio}</Card.Text>
+            <Card.Text><span className='text-primary'>Birth: </span>{director.Birth}</Card.Text>
+            <Card.Text><span className='text-primary'>Death: </span>{director.Death}</Card.Text>
             <Button block onClick={() => { onBackClick(); }}>Back</Button>
           </Card.Body>
         </Card>
