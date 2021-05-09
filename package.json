@@ -17,12 +17,16 @@
   },
   "homepage": "https://github.com/Nusrat-Jahan/myFlix-client#readme",
   "dependencies": {
+    "@types/react-router-dom": "^5.1.7",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
+    "moment": "^2.29.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-moment": "^1.1.1",
+    "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.0.0-beta.2"
