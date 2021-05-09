@@ -29,16 +29,16 @@ class MainView extends React.Component {
     };
   }
 
-  componentDidMount() {
-    axios.get('https://myflix-movie-app.herokuapp.com/movies').then(response => {
-      this.setState({
-        movies: response.data
-      });
-    })
-      .catch(error => {
-        console.log(error);
-      });
-  }
+  // componentDidMount() {
+  //   axios.get('https://myflix-movie-app.herokuapp.com/movies').then(response => {
+  //     this.setState({
+  //       movies: response.data
+  //     });
+  //   })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // }
 
   /*When a movie is clicked, this function is invoked and updates the state of the `selectedMovie` *property to that movie*/
   setSelectedMovie(movieData) { // custom component method—setSelectedMovie
@@ -156,10 +156,10 @@ class MainView extends React.Component {
 
           <Route path="/register" render={() => {
             // if (user) return <Redirect to="/" />
-            if (!register)
-              return <Col>
-                <RegistrationView />
-              </Col>
+            // if (!register)
+            return <Col>
+              <RegistrationView />
+            </Col>
           }} />
 
           {/* <Link to={`/users/${user}`}>
