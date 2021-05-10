@@ -232,16 +232,16 @@ export class ProfileView extends React.Component {
                     placeholder="Change Birthdate" />
 
                 </Form.Group>
-                {/* <Link to={`/users/${this.state.Username}`}> */}
-                <Button variant="outline-dark"
-                  type="link"
-                  size="sm"
-                  block
-                  onClick={() => this.handleUpdate()}
-                >
-                  Save changes
+                <Link to={`/users/${this.state.Username}`}>
+                  <Button variant="outline-dark"
+                    type="link"
+                    size="sm"
+                    block
+                    onClick={() => this.handleUpdate()}
+                  >
+                    Save changes
                     </Button>
-                {/* </Link> */}
+                </Link>
                 <Link to={`/`}>
                   <Button variant="outline-dark"
                     type="submit"
