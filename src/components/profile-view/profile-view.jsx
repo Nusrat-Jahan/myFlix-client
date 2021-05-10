@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Card, FormControl } from 'react-bootstrap';
 import axios from "axios";
-import Moment from 'react-moment';
 import moment from 'moment';
 import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button';
@@ -41,8 +40,12 @@ export class ProfileView extends React.Component {
       .then(response => {
         // console.log(response);
         //assign the result to this state
-        const formattedBirthdate = moment(response.data.Birthdate).format("YYYY-MM-DD");
-        // console.log({ formattedBirthdate });
+        let formattedBirthdate = 'N/A';
+        if (typeof response.data.Birthdate != "undefined" && response.data.Birthdate != null) {
+          formattedBirthdate = moment(response.data.Birthdate).format("YYYY-MM-DD")
+          console.log(formattedBirthdate);
+        };
+        console.log({ formattedBirthdate });
         this.setState({
           Username: response.data.Username,
           Password: response.data.Password,
@@ -94,9 +97,9 @@ export class ProfileView extends React.Component {
       });
   }
   handleUpdate() {
-    const token = localStorage.getItem("token");
+    let token = localStorage.getItem("token");
     console.log({ token });
-    const user = localStorage.getItem("user");
+    let user = localStorage.getItem("user");
     console.log({ user });
     console.log(this.state);
     let setisValid = this.formValidation();
@@ -113,6 +116,8 @@ export class ProfileView extends React.Component {
           { headers: { Authorization: `Bearer ${token}` } }
         )
         .then((response) => {
+          // const data = response.data;
+          // props.onLoggedIn(data);
           alert(user + " has been updated.");
           console.log(response);
         })
@@ -159,7 +164,7 @@ export class ProfileView extends React.Component {
   };
 
   handleChange(e) {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
     console.log(name, value);
     this.setState({
       [name]: value
@@ -169,13 +174,13 @@ export class ProfileView extends React.Component {
   render() {
     const { movies } = this.props;
     const { UsernameError, EmailError, PasswordError, ConfirmPasswordError } = this.state;
-    this.getUser(localStorage.getItem("token"));
+    // this.getUser(localStorage.getItem("token"));
     const FavoriteMovieList = movies.filter((movie) => {
       return this.state.FavoriteMovies.includes(movie._id);
     });
     // console.log(favoriteMovieList);
 
-    if (!movies) alert("Please sign in");
+    // if (!movies) alert("Please sign in");
     return (
       <div className="userProfile" style={{ display: "flex" }}>
         <Container>
@@ -224,19 +229,19 @@ export class ProfileView extends React.Component {
                 <Form.Group controlId="formBirthdate">
                   <Form.Label>Date of Birth: </Form.Label>
                   <FormControl size="sm" type="text" name="Birthdate" value={this.state.Birthdate} onChange={(e) => this.handleChange(e)}
-                    placeholder="Change Email" />
+                    placeholder="Change Birthdate" />
 
                 </Form.Group>
-                <Link to={`/update/${this.state.username}`}>
-                  <Button variant="outline-dark"
-                    type="link"
-                    size="sm"
-                    block
-                    onClick={() => this.handleUpdate()}
-                  >
-                    Save changes
+                {/* <Link to={`/users/${this.state.Username}`}> */}
+                <Button variant="outline-dark"
+                  type="link"
+                  size="sm"
+                  block
+                  onClick={() => this.handleUpdate()}
+                >
+                  Save changes
                     </Button>
-                </Link>
+                {/* </Link> */}
                 <Link to={`/`}>
                   <Button variant="outline-dark"
                     type="submit"
