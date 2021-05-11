@@ -50,7 +50,6 @@ export function RegistrationView(props) {
     const emailError = {};
     const passwordError = {};
     const confirmPasswordError = {};
-    // const formattedBirthdate = moment(birthdate).format("YYYY-MM-DD");
     const birhdateError = {};
     let isValid = true;
     if (username.trim().length < 5) {
@@ -69,9 +68,8 @@ export function RegistrationView(props) {
       emailError.emailNotEmail = "A valid email address is required.";
       isValid = false;
     }
-    else if (birthdate.trim().length < 1) {
-      birhdateError.noBirthdate = "Must enter a birthdate";
-      alert('add a birthdate');
+    else if (birthdate === '') {
+      birhdateError.noBirthdate = "Please enter a birthdate";
       isValid = false;
     }
     setUsernameError(usernameError);
@@ -135,7 +133,7 @@ export function RegistrationView(props) {
           </Form.Group>
           <Form.Group controlId="formBirthdate">
             <Form.Label>Birthdate:</Form.Label>
-            <Form.Control type="text" placeholder='Enter your Birthday' onChange={e => setBirthdate(e.target.value)} />
+            <Form.Control type="date" placeholder='MM/DD/YYYY' onChange={e => setBirthdate(e.target.value)} />
             {Object.keys(birthdateError).map((key) => {
               return (
                 <div key={key} style={{ color: "red" }}>
