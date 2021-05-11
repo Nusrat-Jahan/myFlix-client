@@ -5,15 +5,14 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { RegistrationView } from '../registration-view/registration-view';
 import './login-view.scss';
 import PropTypes from 'prop-types';
 
 export function LoginView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [usernameError, setUsernameError] = useState({});
-  const [passwordError, setPasswordError] = useState({});
+  const [usernameError, setUsernameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,6 +27,7 @@ export function LoginView(props) {
       })
         .then(response => {
           const data = response.data;
+          console.log(data);
           props.onLoggedIn(data);
         })
         .catch(e => {
@@ -39,8 +39,8 @@ export function LoginView(props) {
   }
 
   const formValidation = () => {
-    const usernameError = {};
-    const passwordError = {};
+    let usernameError = {};
+    let passwordError = {};
     let isValid = true;
     if (username.trim().length < 5) {
       usernameError.usernameShort = "Username must be at least 5 characters";
@@ -85,19 +85,10 @@ export function LoginView(props) {
             <p className="text-secondary">Note: Do not share your password with anyone.</p>
           </Form.Group>
           <Button variant="primary" type="submit" block onClick={handleSubmit}>Submit</Button>
-          {/* <Button block onClick={() => !this.state.username && <RegistrationView />}>Register</Button> */}
-          {/* <Router>
-            <Link to={`/register`}>
-              <Button className="mb-2" block variant="primary">Sign up</Button>
-            </Link>
-          </Router> */}
-          {/* <Card.Body>
-            <Link to={`/register`}>
-              <Card.Title>{movie.Title}</Card.Title>
-            </Link>
-          </Card.Body> */}
-
-          <p>Don't have an account?<Button variant="link">Sign up</Button></p>
+          <p>
+            Don't have an account?
+          <Link to='/register'> Register</Link>
+          </p>
         </Form >
       </Col >
     </Row >
