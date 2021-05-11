@@ -22,7 +22,7 @@ export class ProfileView extends React.Component {
       UsernameError: "",
       EmailError: "",
       PasswordError: "",
-      ConfirmPasswordError: ""
+      BirthdateError: ""
     };
   }
   componentDidMount() {
@@ -48,7 +48,7 @@ export class ProfileView extends React.Component {
         console.log({ formattedBirthdate });
         this.setState({
           Username: response.data.Username,
-          Password: response.data.Password,
+          // Password: response.data.Password,
           Email: response.data.Email,
           Birthdate: formattedBirthdate,
           FavoriteMovies: response.data.FavoriteMovies,
@@ -96,11 +96,10 @@ export class ProfileView extends React.Component {
         console.log(error);
       });
   }
-  handleUpdate() {
+  handleUpdate(e) {
     let token = localStorage.getItem("token");
-    console.log({ token });
+    // console.log({ token });
     let user = localStorage.getItem("user");
-    console.log({ user });
     console.log(this.state);
     let setisValid = this.formValidation();
     if (setisValid) {
@@ -116,8 +115,9 @@ export class ProfileView extends React.Component {
           { headers: { Authorization: `Bearer ${token}` } }
         )
         .then((response) => {
-          // const data = response.data;
-          // props.onLoggedIn(data);
+          const data = response.data;
+          localStorage.setItem("user", data.Username);
+          console.log(data);
           alert(user + " has been updated.");
           console.log(response);
         })
@@ -131,8 +131,7 @@ export class ProfileView extends React.Component {
     let UsernameError = {};
     let EmailError = {};
     let PasswordError = {};
-    let ConfirmPasswordError = {};
-    //const birthdayError = {};
+    let BirthdateError = {};
     let isValid = true;
     if (this.state.Username.trim().length < 5) {
       UsernameError.usernameShort = "Must be alphanumeric and contains at least 5 characters";
@@ -146,26 +145,23 @@ export class ProfileView extends React.Component {
       EmailError.emailNotEmail = "A valid email address is required.";
       isValid = false;
     }
-    // if (this.state.Password !== this.state.ConfirmPassword) {
-    //   ConfirmPasswordError.passwordMismatch = "Your passwords do not match.";
-    //   isValid = false;
-    // }
+    if (this.state.birthdate === '') {
+      BirthdateError.birthdateEmpty = "Please enter your birthdate.";
+      isValid = false;
+    }
     this.setState({
       UsernameError: UsernameError,
       PasswordError: PasswordError,
       EmailError: EmailError,
-      ConfirmPasswordError: ConfirmPasswordError,
+      // ConfirmPasswordError: ConfirmPasswordError,
+      BirthdateError: BirthdateError,
     })
-    // setUsernameError(UsernameError);
-    // setPasswordError(PasswordError);
-    // setEmailError(EmailError);
-    // setConfirmPasswordError(ConfirmPasswordError);
     return isValid;
   };
 
   handleChange(e) {
     let { name, value } = e.target;
-    console.log(name, value);
+    // console.log(name, value);
     this.setState({
       [name]: value
     })
@@ -173,20 +169,17 @@ export class ProfileView extends React.Component {
 
   render() {
     const { movies } = this.props;
-    const { UsernameError, EmailError, PasswordError, ConfirmPasswordError } = this.state;
-    // this.getUser(localStorage.getItem("token"));
+    const { UsernameError, EmailError, PasswordError, BirthdateError } = this.state;
     const FavoriteMovieList = movies.filter((movie) => {
       return this.state.FavoriteMovies.includes(movie._id);
     });
     // console.log(favoriteMovieList);
-
-    // if (!movies) alert("Please sign in");
     return (
       <div className="userProfile" style={{ display: "flex" }}>
         <Container>
-          <Row>
-            <Col>
-              <Form style={{ width: "24rem", float: "left" }}>
+          <Row className="justify-content-md-center">
+            <Col md={12}>
+              <Form className="justify-content-md-center">
                 <h1 style={{ textAlign: "center" }}>Profile Details</h1>
                 <Form.Group controlId="formUsername">
                   <Form.Label>Username: </Form.Label>
@@ -201,9 +194,9 @@ export class ProfileView extends React.Component {
                   })}
                 </Form.Group>
                 <Form.Group controlId="formPassword">
-                  <Form.Label>Passowd: </Form.Label>
+                  <Form.Label>Password: </Form.Label>
                   <FormControl size="sm" type="password" name="Password" value={this.state.Password} onChange={(e) => this.handleChange(e)}
-                    placeholder="Change Password" />
+                    placeholder="Change your password" />
                   {Object.keys(PasswordError).map((key) => {
                     return (
                       <div key={key} style={{ color: "red" }}>
@@ -211,7 +204,6 @@ export class ProfileView extends React.Component {
                       </div>
                     );
                   })}
-
                 </Form.Group>
                 <Form.Group controlId="formEmail">
                   <Form.Label>Email: </Form.Label>
@@ -228,31 +220,39 @@ export class ProfileView extends React.Component {
                 </Form.Group>
                 <Form.Group controlId="formBirthdate">
                   <Form.Label>Date of Birth: </Form.Label>
-                  <FormControl size="sm" type="text" name="Birthdate" value={this.state.Birthdate} onChange={(e) => this.handleChange(e)}
+                  <FormControl size="sm" type="date" name="Birthdate" value={this.state.Birthdate} onChange={(e) => this.handleChange(e)}
                     placeholder="Change Birthdate" />
+                  {Object.keys(BirthdateError).map((key) => {
+                    return (
+                      <div key={key} style={{ color: "red" }}>
+                        {BirthdateError[key]}
+                      </div>
+                    );
+                  })}
 
                 </Form.Group>
                 <Link to={`/users/${this.state.Username}`}>
-                  <Button variant="outline-dark"
+                  <Button className="mb-2" variant="dark"
                     type="link"
-                    size="sm"
+                    size="md"
                     block
-                    onClick={() => this.handleUpdate()}
+                    onClick={(e) => this.handleUpdate(e)}
                   >
                     Save changes
                     </Button>
                 </Link>
                 <Link to={`/`}>
-                  <Button variant="outline-dark"
+                  <Button className="mb-2"
+                    variant="primary"
                     type="submit"
-                    size="sm"
+                    size="md"
                     block
                   >
                     Back to Main
                   </Button>
                 </Link>
-                <Button variant="outline-danger"
-                  size="sm"
+                <Button className="mb-2" variant="danger"
+                  size="md"
                   block
                   onClick={() => this.handleDelete()}
                 >
@@ -260,34 +260,36 @@ export class ProfileView extends React.Component {
                 </Button>
 
               </Form>
-            </Col>
-            <Col>
               <div
                 className="favoriteMovies"
                 style={{
-                  float: "right",
+                  float: "center",
                   textAlign: "center",
-                  width: "24rem",
                 }}
               >
-                <h1>Favorite Movies</h1>
-                {FavoriteMovieList.map((movie) => {
-                  return (
-                    <div key={movie._id}>
-                      <Card>
-                        <Card.Img variant="top" src={movie.ImagePath} />
-                        <Card.Body>
-                          <Link to={`/movies/${movie._id}`}>
-                            <Card.Title>{movie.Title}</Card.Title>
-                          </Link>
-                        </Card.Body>
-                      </Card>
-                      <Button onClick={() => this.removeFavorite(movie)}>
-                        Remove
+                <Card.Text className="mt-200" as='h3'>Your Favorite Movies:</Card.Text>
+                <Row className='mb-20'>
+                  {FavoriteMovieList.map((movie) => {
+                    return (
+                      <Col md={3} key={movie._id}>
+                        <div key={movie._id}>
+                          <Card className='mb-20'>
+                            <Card.Img variant="top" src={movie.ImagePath} />
+                            <Card.Body>
+                              <Link to={`/movies/${movie._id}`}>
+                                <Card.Title as='h6'>{movie.Title}</Card.Title>
+                              </Link>
+                            </Card.Body>
+                          </Card>
+                          <Button className='mb-30' onClick={() => this.removeFavorite(movie)}>
+                            Remove
                       </Button>
-                    </div>
-                  );
-                })}
+                        </div>
+                      </Col>
+                    );
+
+                  })}
+                </Row>
               </div>
             </Col>
           </Row>
