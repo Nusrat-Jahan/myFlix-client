@@ -33,7 +33,6 @@ export class MovieCard extends React.Component {
           <Link to={`/directors/${movieData.Director.Name}`}>
             <Button className="mb-2" block variant="primary">Director</Button>
           </Link>
-
           <Link to={`/genres/${movieData.Genre.Name}`}>
             <Button className="mb-2" block variant="primary">Genre</Button>
           </Link>
@@ -42,6 +41,7 @@ export class MovieCard extends React.Component {
           </Link>
         </Card.Body>
       </Card>
+      // </div>
     )
   }
 }
