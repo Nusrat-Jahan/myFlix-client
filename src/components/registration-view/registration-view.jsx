@@ -36,9 +36,12 @@ export function RegistrationView(props) {
           window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
           alert("You have sucessfully registered.");
         })
-        .catch(e => {
-          console.log('error registering the user');
-          alert('The value you entered is not valid.');
+        .catch(error => {
+          if (error.response && error.response.status === 400) {
+            setUsernameError({ usernameDuplicated: 'Username already exists.' })
+          } else {
+            alert('The value you entered is not valid.')
+          }
         });
       console.log(username, password, email, birthdate);
       // props.onRegister(username);
