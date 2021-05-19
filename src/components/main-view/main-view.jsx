@@ -43,9 +43,10 @@ class MainView extends React.Component {
   /* When a user successfully logs in, this function updates the `user` property in state to that *particular user*/
   onLoggedIn(authData) {
     console.log(authData);
-    this.setState({
-      user: authData.user.Username
-    });
+    // this.setState({
+    //   user: authData.user.Username
+    // });
+    this.props.setUsers(authData.user.Username);
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
     this.getMovies(authData.token);
@@ -54,9 +55,10 @@ class MainView extends React.Component {
   onLoggedOut() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    this.setState({
-      user: null
-    });
+    // this.setState({
+    //   user: null
+    // });
+    this.props.setUsers(null);
     console.log("logout successfully");
   }
   //  get movies method to get movies data from api
@@ -73,16 +75,16 @@ class MainView extends React.Component {
       });
   }
 
-  getUsers(token) {
+  getUsers(token, user) {
     axios.get('https://myflix-movie-app.herokuapp.com/users', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
         //Assign the result to the state
-        this.setState({
-          users: response.data
-        });
-        // this.props.setUsers(response.data);
+        // this.setState({
+        //   users: response.data
+        // });
+        this.props.setUsers(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -92,9 +94,11 @@ class MainView extends React.Component {
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
-      this.setState({
-        user: localStorage.getItem('user')
-      });
+      // this.setState({
+      //   user: localStorage.getItem('user')
+      // });
+      this.props.setUsers(localStorage.getItem('user'));
+      // this.getUsers(accessToken);
       this.getMovies(accessToken);
     }
   }
@@ -112,8 +116,8 @@ class MainView extends React.Component {
   }
 
   render() { //predefined component method render
-    let { movies } = this.props;
-    const { user } = this.state;
+    let { movies, user } = this.props;
+    // const { user } = this.state;
 
     return (
       <Router>
@@ -203,7 +207,7 @@ class MainView extends React.Component {
               {/* if (users.length === 0) return <div className="main-view" />; */}
               {/* <ProfileView profile={users.find(m => m.Username === match.params.username).Users} onBackClick={() => history.goBack()} /> */}
               <ProfileView onLoggedIn={user => this.onLoggedIn(user)}
-                movies={movies}
+                movies={movies} user={user}
                 onBackClick={() => history.goBack()} />
             </Col>
           }} />
@@ -245,9 +249,17 @@ class MainView extends React.Component {
     );
   }
 }
+
+// mapStateToProps to subscribe to the store update
 let mapStateToProps = state => {
-  return { movies: state.movies, users: state.users }
+  return {
+    //mapping movies, user prop to the state
+    movies: state.movies,
+    user: state.user
+  }
 }
 
+// MainView no longer carries its own state -> movies from the store
+// MovieCard components -> MoviesList component
 export default connect(mapStateToProps, { setMovies, setUsers })(MainView);
 // export default MainView;
