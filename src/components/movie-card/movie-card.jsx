@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import { connect } from 'react-redux';
+import { setFavoriteMovies } from '../../actions/actions';
 
 export class MovieCard extends React.Component {
   handleAdd() {
@@ -20,7 +22,6 @@ export class MovieCard extends React.Component {
   }
   render() {
     const { movieData } = this.props;
-    // return <div className="movie-card" onClick={() => { onMovieClick(movieData); }}>{movieData.Title}</div>;
     return (
       <Card>
         <Card.Img variant="top" src={movieData.ImagePath} />
@@ -50,17 +51,15 @@ MovieCard.propTypes = {
   movieData: PropTypes.shape({
     Title: PropTypes.string,
     Description: PropTypes.string.isRequired
-    // ImagePath: PropTypes.arrayOf(PropTypes.string).isRequired,
-    //   ImagePath: PropTypes.string.isRequired,
-    //   Genre: PropTypes.shape({
-    //     Name: PropTypes.string.isRequired,
-    //     Description: PropTypes.string.isRequired
-    //   }),
-    //   Director: PropTypes.shape({
-    //     Name: PropTypes.string.isRequired,
-    //     Bio: PropTypes.string.isRequired,
-    //     Birth: PropTypes.string.isRequired,
-    //     Death: PropTypes.string,
-    //   }),
   }).isRequired,
 };
+
+// let mapStateToProps = state => {
+//   return {
+//     favoriteMovies: state.favoriteMovies
+//   }
+// }
+// let mapDispatchToProps = {
+//   setFavoriteMovies
+// }
+// export default connect(mapStateToProps, mapDispatchToProps)(MovieCard);
