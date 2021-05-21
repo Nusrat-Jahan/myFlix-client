@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { SET_FILTER, SET_MOVIES, SET_USERS, SET_FAVORITEMOVIES } from '../actions/actions';
+import { SET_FILTER, SET_MOVIES, SET_USERS, SET_FAVORITEMOVIES, UPDATE_PROFILE } from '../actions/actions';
 
 function visibilityFilter(state = '', action) {
   switch (action.type) {
@@ -42,10 +42,22 @@ function favoriteMovies(state = [], action) {
   }
 }
 
+function updateProfile(state = '', action) {
+  switch (action.type) {
+    case UPDATE_PROFILE:
+      console.log('update_profile reducer triggered');
+      return action.value;
+    default:
+      return state;
+  }
+}
+
 const moviesApp = combineReducers({
   visibilityFilter,
   movies,
-  user
+  user,
+  favoriteMovies,
+  updateProfile,
 })
 
 export default moviesApp;
