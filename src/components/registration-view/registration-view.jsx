@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import moment from 'moment';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 export function RegistrationView(props) {
   const [username, setUsername] = useState('');
@@ -36,9 +35,12 @@ export function RegistrationView(props) {
           window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
           alert("You have sucessfully registered.");
         })
-        .catch(e => {
-          console.log('error registering the user');
-          alert('The value you entered is not valid.');
+        .catch(error => {
+          if (error.response && error.response.status === 400) {
+            setUsernameError({ usernameDuplicated: 'Username already exists.' })
+          } else {
+            alert('The value you entered is not valid.')
+          }
         });
       console.log(username, password, email, birthdate);
       // props.onRegister(username);
@@ -97,6 +99,7 @@ export function RegistrationView(props) {
               );
             })}
           </Form.Group>
+
           <Form.Group controlId="formPassword">
             <Form.Label>Password:</Form.Label>
             <Form.Control type="password" value={password} placeholder='Enter Password' onChange={e => setPassword(e.target.value)} />
@@ -109,6 +112,7 @@ export function RegistrationView(props) {
             })}
             <p className="text-secondary">Note: Do not share your password with anyone.</p>
           </Form.Group>
+
           <Form.Group controlId="confirmformPassword">
             <Form.Label>Confirm Password:</Form.Label>
             <Form.Control type="password" value={confirmPassword} placeholder='Enter Password' onChange={e => setConfirmPassword(e.target.value)} />
@@ -120,6 +124,7 @@ export function RegistrationView(props) {
               );
             })}
           </Form.Group>
+
           <Form.Group controlId="formEmail">
             <Form.Label>Email:</Form.Label>
             <Form.Control type="email" value={email} placeholder='Enter your Email' onChange={e => setEmail(e.target.value)} />
@@ -131,6 +136,7 @@ export function RegistrationView(props) {
               );
             })}
           </Form.Group>
+
           <Form.Group controlId="formBirthdate">
             <Form.Label>Birthdate:</Form.Label>
             <Form.Control type="date" placeholder='MM/DD/YYYY' onChange={e => setBirthdate(e.target.value)} />
@@ -148,3 +154,12 @@ export function RegistrationView(props) {
     </Row >
   )
 }
+
+RegistrationView.propTypes = {
+  register: PropTypes.shape({
+    Username: PropTypes.string.isRequired,
+    Password: PropTypes.string.isRequired,
+    Email: PropTypes.string.isRequired,
+    Birthdate: PropTypes.string.isRequired
+  }),
+};

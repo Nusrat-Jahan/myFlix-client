@@ -9,6 +9,7 @@ import './login-view.scss';
 import PropTypes from 'prop-types';
 
 export function LoginView(props) {
+  /* call useState() method with an empty string, the initial value of the login variable. This method returns an arry that you destructure */
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [usernameError, setUsernameError] = useState('');
@@ -94,7 +95,7 @@ export function LoginView(props) {
     </Row >
   );
 }
-
+// Added propTypes
 LoginView.propTypes = {
   user: PropTypes.shape({
     Username: PropTypes.string.isRequired,
@@ -102,3 +103,4 @@ LoginView.propTypes = {
   }),
   onLoggedIn: PropTypes.func.isRequired,
 }
+

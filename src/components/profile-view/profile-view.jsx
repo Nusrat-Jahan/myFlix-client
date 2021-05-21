@@ -4,11 +4,10 @@ import { Card, FormControl } from 'react-bootstrap';
 import axios from "axios";
 import moment from 'moment';
 import Container from "react-bootstrap/Container";
-import Button from 'react-bootstrap/Button';
-import Form from "react-bootstrap/Form";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+import { Button, Form, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import { updateProfile } from '../../actions/actions';
 
 export class ProfileView extends React.Component {
   constructor(props) {
@@ -22,7 +21,7 @@ export class ProfileView extends React.Component {
       UsernameError: "",
       EmailError: "",
       PasswordError: "",
-      BirthdateError: ""
+      BirthdateError: "",
     };
   }
   componentDidMount() {
@@ -43,7 +42,7 @@ export class ProfileView extends React.Component {
         let formattedBirthdate = 'N/A';
         if (typeof response.data.Birthdate != "undefined" && response.data.Birthdate != null) {
           formattedBirthdate = moment(response.data.Birthdate).format("YYYY-MM-DD")
-          console.log(formattedBirthdate);
+          // console.log(formattedBirthdate);
         };
         console.log({ formattedBirthdate });
         this.setState({
@@ -103,6 +102,8 @@ export class ProfileView extends React.Component {
     console.log(this.state);
     let setisValid = this.formValidation();
     if (setisValid) {
+      console.log(this.props);
+      console.log(this.state);
       axios
         .put(
           `https://myflix-movie-app.herokuapp.com/users/${user}`,
@@ -138,7 +139,7 @@ export class ProfileView extends React.Component {
       isValid = false;
     }
     if (this.state.Password.trim().length < 3) {
-      PasswordError.passwordMissing = "You must enter a password.(minimum 4 characters) ";
+      PasswordError.passwordMissing = "You must enter a current or new password.(minimum 4 characters) ";
       isValid = false;
     }
     if (!(this.state.Email && this.state.Email.includes(".") && this.state.Email.includes("@"))) {
@@ -153,7 +154,6 @@ export class ProfileView extends React.Component {
       UsernameError: UsernameError,
       PasswordError: PasswordError,
       EmailError: EmailError,
-      // ConfirmPasswordError: ConfirmPasswordError,
       BirthdateError: BirthdateError,
     })
     return isValid;
@@ -168,7 +168,7 @@ export class ProfileView extends React.Component {
   }
 
   render() {
-    const { movies } = this.props;
+    const { movies, user } = this.props;
     const { UsernameError, EmailError, PasswordError, BirthdateError } = this.state;
     const FavoriteMovieList = movies.filter((movie) => {
       return this.state.FavoriteMovies.includes(movie._id);
@@ -179,11 +179,16 @@ export class ProfileView extends React.Component {
         <Container>
           <Row className="justify-content-md-center">
             <Col md={12}>
-              <Form className="justify-content-md-center">
+              <Form className="justify-content-md-center mb-30">
                 <h1 style={{ textAlign: "center" }}>Profile Details</h1>
+
                 <Form.Group controlId="formUsername">
                   <Form.Label>Username: </Form.Label>
-                  <FormControl size="sm" type="text" name="Username" value={this.state.Username} onChange={(e) => this.handleChange(e)}
+                  <FormControl size="sm"
+                    type="text"
+                    name="Username"
+                    value={this.state.Username}
+                    onChange={(e) => this.handleChange(e)}
                     placeholder="Change username" />
                   {Object.keys(UsernameError).map((key) => {
                     return (
@@ -192,11 +197,16 @@ export class ProfileView extends React.Component {
                       </div>
                     );
                   })}
+
                 </Form.Group>
                 <Form.Group controlId="formPassword">
                   <Form.Label>Password: </Form.Label>
-                  <FormControl size="sm" type="password" name="Password" value={this.state.Password} onChange={(e) => this.handleChange(e)}
-                    placeholder="Change your password" />
+                  <FormControl size="sm"
+                    type="password"
+                    name="Password"
+                    value={this.state.Password}
+                    onChange={(e) => this.handleChange(e)}
+                    placeholder="Enter your password or Change password" />
                   {Object.keys(PasswordError).map((key) => {
                     return (
                       <div key={key} style={{ color: "red" }}>
@@ -204,10 +214,16 @@ export class ProfileView extends React.Component {
                       </div>
                     );
                   })}
+
                 </Form.Group>
                 <Form.Group controlId="formEmail">
                   <Form.Label>Email: </Form.Label>
-                  <FormControl size="sm" type="email" name="Email" value={this.state.Email} onChange={(e) => this.handleChange(e)}
+                  <FormControl
+                    size="sm"
+                    type="email"
+                    name="Email"
+                    value={this.state.Email}
+                    onChange={(e) => this.handleChange(e)}
                     placeholder="Change Email" />
                   {Object.keys(EmailError).map((key) => {
                     return (
@@ -220,7 +236,12 @@ export class ProfileView extends React.Component {
                 </Form.Group>
                 <Form.Group controlId="formBirthdate">
                   <Form.Label>Date of Birth: </Form.Label>
-                  <FormControl size="sm" type="date" name="Birthdate" value={this.state.Birthdate} onChange={(e) => this.handleChange(e)}
+                  <FormControl
+                    size="sm"
+                    type="date"
+                    name="Birthdate"
+                    value={this.state.Birthdate}
+                    onChange={(e) => this.handleChange(e)}
                     placeholder="Change Birthdate" />
                   {Object.keys(BirthdateError).map((key) => {
                     return (
@@ -231,6 +252,7 @@ export class ProfileView extends React.Component {
                   })}
 
                 </Form.Group>
+
                 <Link to={`/users/${this.state.Username}`}>
                   <Button className="mb-2" variant="dark"
                     type="link"
@@ -241,6 +263,7 @@ export class ProfileView extends React.Component {
                     Save changes
                     </Button>
                 </Link>
+
                 <Link to={`/`}>
                   <Button className="mb-2"
                     variant="primary"
@@ -251,6 +274,7 @@ export class ProfileView extends React.Component {
                     Back to Main
                   </Button>
                 </Link>
+
                 <Button className="mb-2" variant="danger"
                   size="md"
                   block
@@ -258,8 +282,8 @@ export class ProfileView extends React.Component {
                 >
                   Delete Account
                 </Button>
-
               </Form>
+
               <div
                 className="favoriteMovies"
                 style={{
@@ -287,7 +311,6 @@ export class ProfileView extends React.Component {
                         </div>
                       </Col>
                     );
-
                   })}
                 </Row>
               </div>
@@ -302,53 +325,13 @@ ProfileView.propTypes = {
   movies: PropTypes.array.isRequired
 };
 
+let mapStateToProps = state => {
+  return {
+    movies: state.movies,
+    user: state.user,
+    favoriteMovies: state.favoriteMovies,
+  }
+}
 
+export default connect(mapStateToProps, { updateProfile })(ProfileView);
 
-
-
-// import React from 'react';
-// import { Card } from 'react-bootstrap';
-// import Button from 'react-bootstrap/Button';
-
-// export function ProfileView(match) {
-//   const [username, setUsername] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [email, setEmail] = useState('');
-//   const [bithdate, setBirthdate] = useState('');
-//   axios.get('https://myflix-movie-app.herokuapp.com/users', {
-//     Username: username,
-//     Password: password,
-//     Email: email,
-//     Birthdate: birthdate 
-//   })
-//     .then(response => {
-//       const data = response.data;
-//       console.log(data);
-//       window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
-//     })
-//     .catch(e => {
-//       console.log('error showing the user')
-//     });
-//   // console.log(username, password, email, birthdate);
-//   // props.onRegister(username);
-
-//   render() {
-//     const { profile, onBackClick } = this.props;
-
-//     return (
-//       <div className="profile-view">
-//         <Card border="info" bg="dark" text="white" className="profile-card">
-
-//           <Card.Body>
-//             <Card.Title><span className='text-primary'>Username: </span> {profile.Username}</Card.Title>
-//             <Card.Text><span className='text-primary'>Description: </span>{profile.Password}</Card.Text>
-//             <Card.Text><span className='text-primary'>Genre: </span>{profile.Email}</Card.Text>
-//             <Card.Text><span className='text-primary'>Director: </span>{profile.Birthdate}</Card.Text>
-//             <Button block onClick={() => { onBackClick(); }}>Back</Button>
-//           </Card.Body>
-//         </Card>
-
-//       </div>
-//     );
-//   };
-// }

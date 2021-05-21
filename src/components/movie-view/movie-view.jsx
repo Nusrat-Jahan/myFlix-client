@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import PropTypes from 'prop-types';
 import './movie-view.scss';
 
 export class MovieView extends React.Component {
@@ -27,3 +28,20 @@ export class MovieView extends React.Component {
     );
   }
 }
+
+MovieView.propTypes = {
+  movieData: PropTypes.shape({
+    Title: PropTypes.string,
+    Description: PropTypes.string.isRequired,
+    ImagePath: PropTypes.string.isRequired,
+    Genre: PropTypes.shape({
+      Name: PropTypes.string.isRequired,
+    }),
+    Director: PropTypes.shape({
+      Name: PropTypes.string.isRequired,
+    }),
+    ReleaseYear: PropTypes.string.isRequired,
+    ImdbRating: PropTypes.number.isRequired,
+  }).isRequired,
+  onBackClick: PropTypes.func.isRequired
+};
