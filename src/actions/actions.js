@@ -1,7 +1,7 @@
 export const SET_MOVIES = 'SET_MOVIES'; // Intializes movies property
 export const SET_FILTER = 'SET_FILTER'; // Filter my movies list
 export const SET_USERS = 'SET_USERS';
-export const UPDATE_PROFILE = 'UPDATE_PROFILE';
+export const SET_PROFILE = 'SET_PROFILE';
 export const SET_FAVORITEMOVIES = 'SET_FAVORITEMOVIES';
 
 // set the movies
@@ -31,10 +31,10 @@ export function setUsers(value) {
   };
 }
 
-export function updateProfile(value) {
-  console.log('UPDATE_PROFILE action triggered');
+export function setProfile(value) {
+  console.log('set_PROFILE action triggered');
   return {
-    type: UPDATE_PROFILE,
+    type: SET_PROFILE,
     value
   };
 }
