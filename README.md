@@ -1,4 +1,5 @@
 # myFlix-client
+![MyFlix](https://i.postimg.cc/vZNrWpdv/Myflix-movielist.png)
 
 ## Project Description:
 
@@ -26,3 +27,11 @@ This project is a React application that allows users to sign up, log in and get
 * The application must use Bootstrap as a UI library for styling and responsiveness
 * The application must contain a mix of class components and function components
 * The application may be hosted online
+
+## How to Run
+
+To run this project locally, run the following command, then navigate to the localhost port stated in your terminal.
+
+```
+parcel src/index.html
+```
