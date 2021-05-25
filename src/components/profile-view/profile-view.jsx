@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, FormControl } from 'react-bootstrap';
 import axios from "axios";
@@ -7,7 +7,7 @@ import Container from "react-bootstrap/Container";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
-import { updateProfile } from '../../actions/actions';
+import { setProfile } from '../../actions/actions';
 
 export class ProfileView extends React.Component {
   constructor(props) {
@@ -102,8 +102,7 @@ export class ProfileView extends React.Component {
     console.log(this.state);
     let setisValid = this.formValidation();
     if (setisValid) {
-      console.log(this.props);
-      console.log(this.state);
+      console.log(this.props.setProfile(this.state));
       axios
         .put(
           `https://myflix-movie-app.herokuapp.com/users/${user}`,
@@ -333,5 +332,5 @@ let mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { updateProfile })(ProfileView);
+export default connect(mapStateToProps, { setProfile })(ProfileView);
 
