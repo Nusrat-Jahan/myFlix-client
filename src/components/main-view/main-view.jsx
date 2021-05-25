@@ -2,21 +2,19 @@ import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-
 import { setMovies, setUsers } from '../../actions/actions';
 import MoviesList from '../movies-list/movies-list';
 import Col from 'react-bootstrap/Col';
-
 import './main-view.scss';
 import { LoginView } from '../login-view/login-view';
 import { MovieView } from '../movie-view/movie-view';
 import { DirectorView } from '../director-view/director-view';
 import { GenreView } from '../genre-view/genre-view';
 import { RegistrationView } from '../registration-view/registration-view';
-import { ProfileView } from '../profile-view/profile-view';
+import ProfileView from '../profile-view/profile-view';
 import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
 
 class MainView extends React.Component {
 
@@ -39,7 +37,6 @@ class MainView extends React.Component {
 
   /* When a user successfully logs in, this function updates the `user` property in state to that *particular user*/
   onLoggedIn(authData) {
-    console.log(authData);
     this.props.setUsers(authData.user.Username);
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
@@ -77,7 +74,7 @@ class MainView extends React.Component {
         console.log(error);
       });
   }
-
+  // To persist login data
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
